@@ -36,8 +36,8 @@ http.createServer(function (request, response) {
 
     }
     
-     if(fileName === 'index'){
-        fileName += '.html';
+     if(fileName === 'index' ){
+        fileName = 'index.html';
         fileSystem.readFile(fileName , callback2);
 
     function callback2(err, data) {
@@ -87,6 +87,32 @@ http.createServer(function (request, response) {
         /* the response is complete */
         response.end();
         }
+    }
+    if (fileName !== 'index' || fileName !== 'todo' || fileName !== 'read-todo'){
+        fileName = 'index.html';
+        fileSystem.readFile(fileName , callback2);
+
+    function callback2(err, data) {
+        if (err) {
+            console.error(err);
+            /* Send the HTTP header 
+             * HTTP Status: 400 : NOT FOUND
+             * Content Type: text/html 
+             */
+            response.writeHead(400, {'Content-Type': 'text/html'});   
+            response.write('<!DOCTYPE html><html><body><div>Page Not Found</div></body></html>');
+        } else {
+            /* Send the HTTP header 
+             * HTTP Status: 200 : OK
+             * Content Type: text/html 
+             */
+            response.writeHead(200, {'Content-Type': 'text/html'}); 
+            response.write(data.toString());
+        }     
+        
+        /* the response is complete */
+        response.end();
+    }
     }
     
    
